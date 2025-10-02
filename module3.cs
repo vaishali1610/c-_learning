@@ -255,29 +255,100 @@ interface Shape
     }
     //----------------polymorphism 
     class Overloading
-{ 
-    public virtual void operate(int a,int b)=>Console.WriteLine(a+b);
-    public void method() => Console.WriteLine("no parameters");
-    public void method(int n) => Console.WriteLine(n);
-    public void method(string name)=> Console.WriteLine(name);
-    public void method(string name, int age)=> Console.WriteLine(name+" "+age);
-}
-class Overrides : Overloading
+    {
+        public virtual void operate(int a, int b) => Console.WriteLine(a + b);
+        public void method() => Console.WriteLine("no parameters");
+        public void method(int n) => Console.WriteLine(n);
+        public void method(string name) => Console.WriteLine(name);
+        public void method(string name, int age) => Console.WriteLine(name + " " + age);
+    }
+    class Overrides : Overloading
+    {
+        public override void operate(int a, int b) => Console.Write(a * b);
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Overloading o = new Overloading();
+            Overrides ov = new Overrides();
+            o.operate(1, 2);
+            ov.operate(1, 2);
+            o.method();
+            o.method("jaisree");
+            o.method("subha", 22);
+        }
+    }
+-----------polymorphic collections
+class Animal
+    {
+        public virtual void Speak() => Console.WriteLine("Animal speaks");
+    }
+
+    class Dog : Animal
+    {
+        public override void Speak() => Console.WriteLine("Dog barks");
+    }
+
+    class Cat : Animal
+    {
+        public override void Speak() => Console.WriteLine("Cat meows");
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            Animal[] animals = new Animal[] { new Dog(), new Cat() };
+
+            foreach (Animal a in animals)  // Upcasting happens here automatically
+            {
+                a.Speak();  // Runtime decides which method to call
+            }
+        }
+    }
+using System;
+
+class Car
 {
-    public override void operate(int a,int b)=>Console.Write(a*b);
+    public virtual void Print() => Console.WriteLine("Car Print");
 }
+
+class Benz : Car
+{
+    // new virtual hides Car.Print and starts a new virtual chain
+    public new virtual void Print() => Console.WriteLine("Benz Print");
+}
+
+class BMW : Benz
+{
+    // Overrides Benz's virtual method, not Car's
+    public override void Print() => Console.WriteLine("BMW Print");
+}
+
 class Program
 {
     static void Main(string[] args)
     {
-        Overloading o = new Overloading();
-        Overrides ov = new Overrides();
-        o.operate(1, 2);
-        ov.operate(1, 2);
-        o.method();
-        o.method("jaisree");
-        o.method("subha", 22);
+        Car car = new Car();
+        Benz benz = new Benz();
+        Car cb = new Benz();
+        Car cbmw = new BMW();
+        Benz bbmw = new BMW();
+        Console.WriteLine("direct objects");
+        car.Print();   // Car Print
+        benz.Print();  // Benz Print
+        bbmw.Print();  // BMW Print
+        Console.WriteLine("\nupcasting to Car");
+        cb.Print();    // Car Print 
+        cbmw.Print();  // Car Print  
+        Console.WriteLine("\nUpcasting to Benz");
+        Benz b2 = (Benz)cbmw;
+        b2.Print();    // BMW Print (BMW overrides Benz’s virtual)
     }
 }
+
+
+
 
 
