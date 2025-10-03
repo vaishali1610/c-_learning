@@ -1,5 +1,5 @@
 using System;
-//---------------delegate-------------
+////---------------delegate-------------
 namespace DelegateDemo
 {
     public delegate double MathOperation(double a, double b);
@@ -35,11 +35,11 @@ namespace AlarmClock
         public void StartAlarm(string time)
         {
             Console.WriteLine($"Time: {time}");
-            OnRing(time); 
+            OnRing(time);
         }
         protected virtual void OnRing(string time)
         {
-            Ring?.Invoke(time); 
+            Ring?.Invoke(time);
         }
     }
     public class Person // Subscriber
@@ -67,4 +67,22 @@ namespace AlarmClock
         }
     }
 }
-
+//----------------overriding in delegates
+public delegate void Overriding(string method);
+class DelegateOver
+{
+    static void MethodA(string a) => Console.WriteLine("MethodA"+ a);
+    static void MethodB(string b) => Console.WriteLine("MethodB"+ b);
+    static void Main(string[] args)
+    {
+    Overriding d;
+        d = MethodA;
+        d("Hello");
+        d = MethodB;
+        d("Hello"); 
+        d += MethodA;
+        d("Hello"); 
+        d -= MethodB;
+        d("Hello"); 
+    }
+}
