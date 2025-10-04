@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 class Repository<T> where T : class
 {
     private List<T> items = new List<T>();
@@ -80,5 +80,60 @@ class Program
         Console.WriteLine("After delete:");
         foreach (var item in repo.GetAll())
             Console.WriteLine(item);
+    }
+}
+
+
+class Numbers
+{
+    public IEnumerable<int> GetEvenNumbers(int n)
+    {
+        for (int i = 2; i <= n; i += 2)
+        {
+            yield return i;  // produce one number at a time
+        }
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        Numbers numbers = new Numbers();
+
+        foreach (var num in numbers.GetEvenNumbers(10))
+        {
+            Console.WriteLine(num);
+        }
+    }
+}
+public class Employee
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Department { get; set; }
+    public int Salary { get; set; }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+List<Employee> employees = new List<Employee>()
+        {
+ new Employee { Id = 1, Name = "Jai", Department = "HR", Salary = 50000 },
+new Employee { Id = 2, Name = "Zambavan", Department = "IT", Salary = 60000 },
+ new Employee { Id = 4, Name = "Joshika", Department = "Finance", Salary = 70000 },
+        };
+var query = (from e in employees where e.Salary > 50000 group e by e.Department into deptGroup  
+ orderby deptGroup.Key select deptGroup).Take(3);  
+
+foreach (var group in query)
+  {
+            Console.WriteLine($"Department: {group.Key}");
+ foreach (var emp in group)
+{
+ Console.WriteLine($"   {emp.Name} - {emp.Department} - {emp.Salary}");
+}
+        }
     }
 }
